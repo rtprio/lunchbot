@@ -38,6 +38,34 @@ def parse_slack_output(slack_rtm_output):
             'curry', 'egg', 'fried_shrimp', 'fries', 'hotdog', 'icecream',
              'pizza', 'poultry_leg', 'ramen', 'spaghetti', 'sushi', 'taco']
 
+    burritos = [
+        'Chopollos Burrito',
+        'Carnitas Burrito',
+        'Carne Asada Burrito',
+        'Pastor Burrito',
+        'Chicken Burrito',
+        'All Meat Burrito',
+        'Red Chile Burrito',
+        'Green Chile Burrito',
+        'Machaca Burrito',
+        'Beef, Bean & Cheese Burrito',
+        'Chicken Fajita Burrito',
+        'Steak Fajita Burrito',
+        'Ground Beef Burrito',
+        'Trio Fajita Burrito',
+        'Steak Potato Burrito',
+        'Veggie Fajita Burrito',
+        'Chile Relleno Burrito',
+        'Veggie Burrito',
+        'Low Fat Burrito',
+        'Rice, Bean & Cheese Burrito',
+        'Bean & Cheese Burrito',
+        'Veggie Potato Burrito',
+        'Tofu Burrito',
+        'Breakfast Burrito',
+        'Breakfast Machaca Burrito',
+        'Steak Potato Breakfast Burrito']
+
     f = random.choice(foods)
     pattern = re.compile(r'.*lunch.*', re.I)
     
@@ -49,7 +77,10 @@ def parse_slack_output(slack_rtm_output):
                 return output['text'].split(AT_BOT)[1].strip().lower(), \
                     output['channel']
             if output and 'text' in output and pattern.match(output['text']):
-                x = slack_client.api_call("reactions.add", name=f, channel=output['channel'], timestamp= output['ts'] )
+                slack_client.api_call("reactions.add", name=f, channel=output['channel'], timestamp= output['ts'] )
+            if output and 'text' in output and re.search(':burrito:',output['text']):
+                msg = "I recomend a _{0}_.".format(random.choice(burritos))
+                slack_client.api_call("chat.postMessage", channel=output['channel'], text=msg, as_user=True, link_names=1)
 
     return None, None
         
