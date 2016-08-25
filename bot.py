@@ -79,7 +79,7 @@ def parse_slack_output(slack_rtm_output):
             if output and 'text' in output and pattern.match(output['text']):
                 slack_client.api_call("reactions.add", name=f, channel=output['channel'], timestamp= output['ts'] )
             if output and 'text' in output and re.search(':burrito:',output['text']):
-                msg = "I recomend a _{0}_.".format(random.choice(burritos))
+                msg = "I recommend a _{0}_.".format(random.choice(burritos))
                 slack_client.api_call("chat.postMessage", channel=output['channel'], text=msg, as_user=True, link_names=1)
 
     return None, None
